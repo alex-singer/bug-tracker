@@ -60,7 +60,7 @@ function (_React$Component2) {
   return IssueFilter;
 }(React.Component);
 
-var issues = [{
+var initialIssues = [{
   id: 1,
   status: "New",
   owner: "Raven",
@@ -84,15 +84,21 @@ function (_React$Component3) {
   _inherits(IssueTable, _React$Component3);
 
   function IssueTable() {
+    var _this;
+
     _classCallCheck(this, IssueTable);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(IssueTable).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(IssueTable).call(this));
+    _this.state = {
+      issues: initialIssues
+    };
+    return _this;
   }
 
   _createClass(IssueTable, [{
     key: "render",
     value: function render() {
-      var issueRows = issues.map(function (issue) {
+      var issueRows = this.state.issues.map(function (issue) {
         return React.createElement(IssueRow, {
           key: issue.id,
           issue: issue
