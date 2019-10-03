@@ -19,10 +19,21 @@ class IssueList extends React.Component {
     this.loadData();
   }
 
-  loadData() {
-    setTimeout(() => {
-      this.setState({ issues: initialIssues });
-    }, 500);
+  async loadData() {
+    const query = `query {
+      issueList {
+        id title status owner created effort due
+      }
+    }`;
+
+    const response = await fetch("/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query })
+    });
+    const body = await response.text();
+    const result = JSON.parse(body, jsonDateReviver);
+    this.setState({ issues: result.data.issueList });
   }
 
   render() {
@@ -46,27 +57,6 @@ class IssueFilter extends React.Component {
     );
   }
 }
-
-const initialIssues = [
-  {
-    id: 1,
-    status: "New",
-    owner: "Raven",
-    effort: 5,
-    created: new Date('2019-10-01'),
-    due: undefined,
-    title: "What the heck is going on?",
-  },
-  {
-    id: 2,
-    status: "New",
-    owner: "Alex",
-    effort: 5,
-    created: new Date('2019-10-01'),
-    due: new Date('2019-10-10'),
-    title: "What the heckin heck is going on?",
-  },
-];
 
 const IssueTable = (props) => {
   const issueRows = props.issues.map( issue => 
@@ -93,6 +83,13 @@ const IssueTable = (props) => {
   );
 }
 
+const dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
+
+function jsonDateReviver(key, value) {
+  if (dateRegex.test(value)) return new Date(value);
+  return value;
+}
+
 const IssueRow = (props) => {
   const issue = props.issue;
   return (
@@ -102,11 +99,12 @@ const IssueRow = (props) => {
       <td>{issue.owner}</td>
       <td>{issue.effort}</td>
       <td>{issue.created.toDateString()}</td>
-      <td>{issue.due ? issue.due.toDateString() : ""}</td>
+      <td>{issue.due ? issue.due.toDateString() : "" }</td>
       <td>{issue.title}</td>
     </tr>
   );
 }
+
 
 class IssueAdd extends React.Component {
   constructor() {

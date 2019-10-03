@@ -2,6 +2,10 @@
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -54,15 +58,53 @@ function (_React$Component) {
     }
   }, {
     key: "loadData",
-    value: function loadData() {
-      var _this2 = this;
+    value: function () {
+      var _loadData = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var query, response, body, result;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                query = "query {\n      issueList {\n        id title status owner created effort due\n      }\n    }";
+                _context.next = 3;
+                return fetch("/graphql", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    query: query
+                  })
+                });
 
-      setTimeout(function () {
-        _this2.setState({
-          issues: initialIssues
-        });
-      }, 500);
-    }
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return response.text();
+
+              case 6:
+                body = _context.sent;
+                result = JSON.parse(body, jsonDateReviver);
+                this.setState({
+                  issues: result.data.issueList
+                });
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function loadData() {
+        return _loadData.apply(this, arguments);
+      }
+
+      return loadData;
+    }()
   }, {
     key: "render",
     value: function render() {
@@ -98,24 +140,6 @@ function (_React$Component2) {
   return IssueFilter;
 }(React.Component);
 
-var initialIssues = [{
-  id: 1,
-  status: "New",
-  owner: "Raven",
-  effort: 5,
-  created: new Date('2019-10-01'),
-  due: undefined,
-  title: "What the heck is going on?"
-}, {
-  id: 2,
-  status: "New",
-  owner: "Alex",
-  effort: 5,
-  created: new Date('2019-10-01'),
-  due: new Date('2019-10-10'),
-  title: "What the heckin heck is going on?"
-}];
-
 var IssueTable = function IssueTable(props) {
   var issueRows = props.issues.map(function (issue) {
     return React.createElement(IssueRow, {
@@ -128,6 +152,13 @@ var IssueTable = function IssueTable(props) {
   }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "ID"), React.createElement("th", null, "Status"), React.createElement("th", null, "Owner"), React.createElement("th", null, "Effort"), React.createElement("th", null, "Created"), React.createElement("th", null, "Due"), React.createElement("th", null, "Title"))), React.createElement("tbody", null, issueRows));
 };
 
+var dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
+
+function jsonDateReviver(key, value) {
+  if (dateRegex.test(value)) return new Date(value);
+  return value;
+}
+
 var IssueRow = function IssueRow(props) {
   var issue = props.issue;
   return React.createElement("tr", null, React.createElement("td", null, issue.id), React.createElement("td", null, issue.status), React.createElement("td", null, issue.owner), React.createElement("td", null, issue.effort), React.createElement("td", null, issue.created.toDateString()), React.createElement("td", null, issue.due ? issue.due.toDateString() : ""), React.createElement("td", null, issue.title));
@@ -139,13 +170,13 @@ function (_React$Component3) {
   _inherits(IssueAdd, _React$Component3);
 
   function IssueAdd() {
-    var _this3;
+    var _this2;
 
     _classCallCheck(this, IssueAdd);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(IssueAdd).call(this));
-    _this3.handleSubmit = _this3.handleSubmit.bind(_assertThisInitialized(_this3));
-    return _this3;
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(IssueAdd).call(this));
+    _this2.handleSubmit = _this2.handleSubmit.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(IssueAdd, [{
