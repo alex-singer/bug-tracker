@@ -116,61 +116,27 @@ var initialIssues = [{
   title: "What the heckin heck is going on?"
 }];
 
-var IssueTable =
-/*#__PURE__*/
-function (_React$Component3) {
-  _inherits(IssueTable, _React$Component3);
+var IssueTable = function IssueTable(props) {
+  var issueRows = props.issues.map(function (issue) {
+    return React.createElement(IssueRow, {
+      key: issue.id,
+      issue: issue
+    });
+  });
+  return React.createElement("table", {
+    className: "bordered-table"
+  }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "ID"), React.createElement("th", null, "Status"), React.createElement("th", null, "Owner"), React.createElement("th", null, "Effort"), React.createElement("th", null, "Created"), React.createElement("th", null, "Due"), React.createElement("th", null, "Title"))), React.createElement("tbody", null, issueRows));
+};
 
-  function IssueTable() {
-    _classCallCheck(this, IssueTable);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(IssueTable).apply(this, arguments));
-  }
-
-  _createClass(IssueTable, [{
-    key: "render",
-    value: function render() {
-      var issueRows = this.props.issues.map(function (issue) {
-        return React.createElement(IssueRow, {
-          key: issue.id,
-          issue: issue
-        });
-      });
-      return React.createElement("table", {
-        className: "bordered-table"
-      }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "ID"), React.createElement("th", null, "Status"), React.createElement("th", null, "Owner"), React.createElement("th", null, "Effort"), React.createElement("th", null, "Created"), React.createElement("th", null, "Due"), React.createElement("th", null, "Title"))), React.createElement("tbody", null, issueRows));
-    }
-  }]);
-
-  return IssueTable;
-}(React.Component);
-
-var IssueRow =
-/*#__PURE__*/
-function (_React$Component4) {
-  _inherits(IssueRow, _React$Component4);
-
-  function IssueRow() {
-    _classCallCheck(this, IssueRow);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(IssueRow).apply(this, arguments));
-  }
-
-  _createClass(IssueRow, [{
-    key: "render",
-    value: function render() {
-      var issue = this.props.issue;
-      return React.createElement("tr", null, React.createElement("td", null, issue.id), React.createElement("td", null, issue.status), React.createElement("td", null, issue.owner), React.createElement("td", null, issue.effort), React.createElement("td", null, issue.created.toDateString()), React.createElement("td", null, issue.due ? issue.due.toDateString() : ""), React.createElement("td", null, issue.title));
-    }
-  }]);
-
-  return IssueRow;
-}(React.Component);
+var IssueRow = function IssueRow(props) {
+  var issue = props.issue;
+  return React.createElement("tr", null, React.createElement("td", null, issue.id), React.createElement("td", null, issue.status), React.createElement("td", null, issue.owner), React.createElement("td", null, issue.effort), React.createElement("td", null, issue.created.toDateString()), React.createElement("td", null, issue.due ? issue.due.toDateString() : ""), React.createElement("td", null, issue.title));
+};
 
 var IssueAdd =
 /*#__PURE__*/
-function (_React$Component5) {
-  _inherits(IssueAdd, _React$Component5);
+function (_React$Component3) {
+  _inherits(IssueAdd, _React$Component3);
 
   function IssueAdd() {
     var _this3;
