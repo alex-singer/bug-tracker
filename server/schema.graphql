@@ -25,7 +25,7 @@ type Query {
 input IssueInputs {
   title: String!
   "Optional, if not supplied, will be set to new"
-  status: StatusType
+  status: StatusType = New
   owner: String
   effort: Int
   due: GraphQLDate

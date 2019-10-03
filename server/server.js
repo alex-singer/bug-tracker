@@ -65,12 +65,11 @@ function issueAdd(_, { issue }) {
   issueValidate(issue);
   issue.created = new Date();
   issue.id = issuesDB.length + 1;
-  if (issue.status == undefined) issue.status = "New";
   issuesDB.push(issue);
   return issue;
 }
 
-function issueValidate(_, { issue }) {
+function issueValidate(issue) {
   const errors = [];
   if (issue.title.length < 3) {
     errors.push("Field 'title' must be at least 3 characters long.")
