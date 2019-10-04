@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -e js,graphql server.js",
+    "start": "nodemon -e js,graphql -w . -w .env server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,5 +15,8 @@
     "nodemon": "^1.19.3",
     "graphql": "^14.5.8",
     "apollo-server-express": "^2.9.4"
+  },
+  "devDependencies": {
+    "dotenv": "^8.1.0"
   }
 }
