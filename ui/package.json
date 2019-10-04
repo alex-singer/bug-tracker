@@ -1,10 +1,10 @@
 {
-  "name": "pro-mern-stack-2",
+  "name": "pro-mern-stack-2-ui",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -w server -e js,graphql server/server.js",
+    "start": "nodemon -w uiserver uiserver.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "babel src --out-dir public",
     "watch": "babel src --out-dir public --watch --verbose"
@@ -13,15 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mongodb": "^3.3.2"
+    "nodemon": "^1.19.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
-    "@babel/preset-react": "^7.0.0",
-    "apollo-server-express": "^2.9.4",
-    "graphql": "^14.5.8",
-    "nodemon": "^1.19.3"
+    "@babel/preset-react": "^7.0.0"
   }
 }
