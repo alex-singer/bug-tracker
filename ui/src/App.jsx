@@ -1,3 +1,41 @@
+/* globals React ReactDOM */
+/* eslint "no-alert": "off" */
+/* eslint "react/no-multi-comp": "off" */
+
+
+const dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
+
+function jsonDateReviver(key, value) {
+  if (dateRegex.test(value)) return new Date(value);
+  return value;
+}
+
+async function graphQLFetch(query, variables = {}) {
+  try {
+    const response = await fetch(window.ENV.UI_API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+    });
+    const body = await response.text();
+    const result = JSON.parse(body, jsonDateReviver);
+
+    if (result.errors) {
+      const error = result.errors[0];
+      if (error.extensions.code === 'BAD_USER_INPUT') {
+        const details = error.extensions.exception.errors.join('\n ');
+        alert(`${error.message}:\n ${details}`);
+      } else {
+        alert(`${error.extensions.code}: ${error.message}`);
+      }
+    }
+    return result.data;
+  } catch (e) {
+    alert(`Error in sending data to server: ${e.message}`);
+  }
+  return undefined;
+}
+
 class IssueList extends React.Component {
   constructor() {
     super();
@@ -5,6 +43,10 @@ class IssueList extends React.Component {
       issues: [],
     };
     this.createIssue = this.createIssue.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadData();
   }
 
   async createIssue(issue) {
@@ -18,10 +60,6 @@ class IssueList extends React.Component {
     if (data) {
       this.loadData();
     }
-  }
-
-  componentDidMount() {
-    this.loadData();
   }
 
   async loadData() {
@@ -38,44 +76,21 @@ class IssueList extends React.Component {
   }
 
   render() {
+    const { issues } = this.state;
     return (
-      <React.Fragment>
+      <>
         <h1>Issue Tracker</h1>
         <IssueFilter />
         <hr />
-        <IssueTable issues={this.state.issues}/>
+        <IssueTable issues={issues} />
         <hr />
-        <IssueAdd createIssue={this.createIssue}/>
-      </React.Fragment>
+        <IssueAdd createIssue={this.createIssue} />
+      </>
     );
   }
 }
 
-async function graphQLFetch(query, variables = {}) {
-  try {
-    const response = await fetch(window.ENV.UI_API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, variables })
-    });
-    const body = await response.text();
-    const result = JSON.parse(body, jsonDateReviver);
-
-    if (result.errors) {
-      const error = result.errors[0];
-      if (error.extensions.code == "BAD_USER_INPUT") {
-        const details = error.extensions.exception.errors.join("\n ");
-        alert(`${error.message}:\n ${details}`);
-      } else {
-        alert(`${error.extensions.code}: ${error.message}`);
-      }
-    }
-    return result.data;
-  } catch (e) {
-    alert(`Error in sending data to server: ${e.message}`);
-  }
-}
-
+// eslint-disable-next-line react/prefer-stateless-function
 class IssueFilter extends React.Component {
   render() {
     return (
@@ -84,10 +99,8 @@ class IssueFilter extends React.Component {
   }
 }
 
-const IssueTable = (props) => {
-  const issueRows = props.issues.map( issue => 
-      <IssueRow key={issue.id} issue={issue} />
-  );
+const IssueTable = ({ issues }) => {
+  const issueRows = issues.map((issue) => <IssueRow key={issue.id} issue={issue} />);
 
   return (
     <table className="bordered-table">
@@ -107,17 +120,10 @@ const IssueTable = (props) => {
       </tbody>
     </table>
   );
-}
-
-const dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
-
-function jsonDateReviver(key, value) {
-  if (dateRegex.test(value)) return new Date(value);
-  return value;
-}
+};
 
 const IssueRow = (props) => {
-  const issue = props.issue;
+  const { issue } = props;
   return (
     <tr>
       <td>{issue.id}</td>
@@ -125,11 +131,11 @@ const IssueRow = (props) => {
       <td>{issue.owner}</td>
       <td>{issue.effort}</td>
       <td>{issue.created.toDateString()}</td>
-      <td>{issue.due ? issue.due.toDateString() : "" }</td>
+      <td>{issue.due ? issue.due.toDateString() : '' }</td>
       <td>{issue.title}</td>
     </tr>
   );
-}
+};
 
 
 class IssueAdd extends React.Component {
@@ -144,11 +150,12 @@ class IssueAdd extends React.Component {
     const issue = {
       owner: form.owner.value,
       title: form.title.value,
-      due: new Date(new Date().getTime() + 1000*60*60*24*10),
-    }
-    this.props.createIssue(issue);
-    form.owner.value = "";
-    form.title.value = "";
+      due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+    };
+    const { createIssue } = this.props;
+    createIssue(issue);
+    form.owner.value = '';
+    form.title.value = '';
   }
 
   render() {
@@ -156,7 +163,7 @@ class IssueAdd extends React.Component {
       <form onSubmit={this.handleSubmit} name="issueAdd">
         <input type="text" name="owner" placeholder="Owner" />
         <input type="text" name="title" placeholder="Title" />
-        <button>Add</button>
+        <button type="submit">Add</button>
       </form>
     );
   }
