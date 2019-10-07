@@ -1,8 +1,8 @@
-const GraphQLDate = require("./graphql_date.js");
-const about = require("./about.js");
-const issue = require("./issue.js");
 const { ApolloServer } = require('apollo-server-express');
 const fs = require('fs');
+const GraphQLDate = require('./graphql_date.js');
+const about = require('./about.js');
+const issue = require('./issue.js');
 require('dotenv').config();
 
 const resolvers = {

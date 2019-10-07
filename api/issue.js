@@ -1,17 +1,5 @@
-const { getDb, getNextSequence } = require("./db");
 const { UserInputError } = require('apollo-server-express');
-
-async function add(_, { issue }) {
-  const db = getDb();
-  validate(issue);
-  const newIssue = { ...issue };
-  newIssue.created = new Date();
-  newIssue.id = await getNextSequence('issues');
-  const result = await db.collection('issues').insertOne(newIssue);
-  const savedIssue = await db.collection('issues')
-    .findOne({ _id: result.insertedId });
-  return savedIssue;
-}
+const { getDb, getNextSequence } = require('./db');
 
 function validate(issue) {
   const errors = [];
@@ -24,6 +12,18 @@ function validate(issue) {
   if (errors.length > 0) {
     throw new UserInputError('Invalid input(s)', { errors });
   }
+}
+
+async function add(_, { issue }) {
+  const db = getDb();
+  validate(issue);
+  const newIssue = { ...issue };
+  newIssue.created = new Date();
+  newIssue.id = await getNextSequence('issues');
+  const result = await db.collection('issues').insertOne(newIssue);
+  const savedIssue = await db.collection('issues')
+    .findOne({ _id: result.insertedId });
+  return savedIssue;
 }
 
 async function list() {
