@@ -1,5 +1,4 @@
-
-/* eslint "react/no-multi-comp": "off" */
+import React from "react";
 
 import IssueFilter from './IssueFilter.jsx';
 import IssueAdd from './IssueAdd.jsx';

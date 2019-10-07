@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56,24 +60,24 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return React.createElement("form", {
+      return _react["default"].createElement("form", {
         onSubmit: this.handleSubmit,
         name: "issueAdd"
-      }, React.createElement("input", {
+      }, _react["default"].createElement("input", {
         type: "text",
         name: "owner",
         placeholder: "Owner"
-      }), React.createElement("input", {
+      }), _react["default"].createElement("input", {
         type: "text",
         name: "title",
         placeholder: "Title"
-      }), React.createElement("button", {
+      }), _react["default"].createElement("button", {
         type: "submit"
       }, "Add"));
     }
   }]);
 
   return IssueAdd;
-}(React.Component);
+}(_react["default"].Component);
 
 exports["default"] = IssueAdd;

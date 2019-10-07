@@ -1,5 +1,7 @@
-/* globals React ReactDOM */
-/* eslint "react/no-multi-comp": "off" */
+import "babel-polyfill";
+import "whatwg-fetch";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import IssueList from './IssueList.jsx';
 

@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _react = _interopRequireDefault(require("react"));
+
 var _IssueFilter = _interopRequireDefault(require("./IssueFilter.jsx"));
 
 var _IssueAdd = _interopRequireDefault(require("./IssueAdd.jsx"));
@@ -140,15 +142,15 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var issues = this.state.issues;
-      return React.createElement(React.Fragment, null, React.createElement("h1", null, "Issue Tracker"), React.createElement(_IssueFilter["default"], null), React.createElement("hr", null), React.createElement(_IssueTable["default"], {
+      return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("h1", null, "Issue Tracker"), _react["default"].createElement(_IssueFilter["default"], null), _react["default"].createElement("hr", null), _react["default"].createElement(_IssueTable["default"], {
         issues: issues
-      }), React.createElement("hr", null), React.createElement(_IssueAdd["default"], {
+      }), _react["default"].createElement("hr", null), _react["default"].createElement(_IssueAdd["default"], {
         createIssue: this.createIssue
       }));
     }
   }]);
 
   return IssueList;
-}(React.Component);
+}(_react["default"].Component);
 
 exports["default"] = IssueList;
