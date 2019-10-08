@@ -6,16 +6,12 @@
   "scripts": {
     "#start": "UI server. HMR is enabled in dev mode",
     "start": "nodemon -w uiserver.js -w .env uiserver.js",
-
     "#test": "",
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "#compile": "Generates JS bundles for production. Use with start",
     "compile": "webpack --mode production",
-
     "#watch": "Compile, and recompile any changes",
     "watch": "webpack --watch",
-
     "#lint": "Runs ESLint on all relevant files",
     "lint": "eslint . --ext js,jsx --fix --ignore-pattern public"
   },
@@ -30,6 +26,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-router-dom": "^5.1.2",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
