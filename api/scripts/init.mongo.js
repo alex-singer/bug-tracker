@@ -15,7 +15,7 @@ const issuesDB = [
   },
   {
     id: 2,
-    Status: 'New',
+    status: 'Assigned',
     owner: 'Alex',
     effort: 5,
     created: new Date('2019-10-01'),
