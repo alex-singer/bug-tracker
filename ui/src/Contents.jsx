@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import IssueList from './IssueList.jsx'
+import IssueEdit from './IssueEdit.jsx'
 import IssueReport from './IssueReport.jsx'
 
 const NotFound = () => <h1>Page not found</h1>;
@@ -11,6 +12,7 @@ export default function Contents() {
     <Switch>
       <Redirect exact from="/" to="/issues" />
       <Route path="/issues" component={IssueList} />
+      <Route path="/edit/:id" component={IssueEdit} />
       <Route path="/report" component={IssueReport} />
       <Route component={NotFound} />
     </Switch>
