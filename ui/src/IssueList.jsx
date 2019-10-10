@@ -3,7 +3,10 @@ import React from "react";
 import IssueFilter from './IssueFilter.jsx';
 import IssueAdd from './IssueAdd.jsx';
 import IssueTable from './IssueTable.jsx';
+import IssueDetail from './IssueDetail.jsx';
 import graphQLFetch from './graphQLFetch';
+
+import { Route } from 'react-router-dom';
 import UrlSearchParams from 'url-search-params';
 
 export default class IssueList extends React.Component {
@@ -45,7 +48,6 @@ export default class IssueList extends React.Component {
     const params =  new URLSearchParams(search);
     const vars = {};
     if (params.get('status')) vars.status = params.get('status');
-    console.log(vars.status);
 
     const query = `query issueList($status: StatusType) {
       issueList (status: $status) {
@@ -61,6 +63,7 @@ export default class IssueList extends React.Component {
 
   render() {
     const { issues } = this.state;
+    const { match } = this.props;
     return (
       <>
         <h1>Issue Tracker</h1>
@@ -69,6 +72,8 @@ export default class IssueList extends React.Component {
         <IssueTable issues={issues} />
         <hr />
         <IssueAdd createIssue={this.createIssue} />
+        <hr />
+        <Route path={`${match.path}/:id`} component={IssueDetail} />
       </>
     );
   }
