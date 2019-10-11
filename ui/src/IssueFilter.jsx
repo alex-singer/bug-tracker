@@ -8,9 +8,11 @@ class IssueFilter extends React.Component {
     super();
     const params = new URLSearchParams(search);
     this.state = {
+      owner: params.get('owner') || '',
       status: params.get('status') || '',
       changed: false,
     }
+    this.onChangeOwner = this.onChangeOwner.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
     this.showOriginalFilter = this.showOriginalFilter.bind(this);
@@ -24,6 +26,10 @@ class IssueFilter extends React.Component {
     }
   }
 
+  onChangeOwner(e) {
+    this.setState({ owner: e.target.value, changed: true });
+  }
+
   onChangeStatus(e) {
     this.setState({ status: e.target.value, changed: true });
   }
@@ -32,24 +38,34 @@ class IssueFilter extends React.Component {
     const { location: { search }} = this.props;
     const params = new URLSearchParams(search);
     this.setState ({
+      owner: params.get('owner') || '',
       status: params.get('status') || '',
       changed: false,
     });
   }
 
   applyFilter() {
+    const { owner } = this.state;
     const { status } = this.state;
     const { history } = this.props;
+
+    let searchString = '?';
+    owner ? searchString += `owner=${owner}&`: '';
+    status ? searchString += `status=${status}&`: '';
+
     history.push({
       pathname: '/issues',
-      search: status ? `?status=${status}` : '',
+      search: searchString,
     });
   }
 
   render() {
-    const { status, changed } = this.state;
+    const { owner, status, changed } = this.state;
     return (
       <div>
+        Owner:
+        {' '}
+        <input type="text" value={owner} onChange={this.onChangeOwner}></input>
         Status:
         {' '}
         <select value={status} onChange={this.onChangeStatus}>

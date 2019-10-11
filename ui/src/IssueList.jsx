@@ -48,12 +48,20 @@ export default class IssueList extends React.Component {
     const params =  new URLSearchParams(search);
     const vars = {};
     if (params.get('status')) vars.status = params.get('status');
+    if (params.get('owner')) vars.owner = params.get('owner');
 
-    const query = `query issueList($status: StatusType) {
-      issueList (status: $status) {
-        id title status owner created effort due
-      }
-    }`;
+    const query = `
+      query issueList(
+        $owner: String
+        $status: StatusType
+      ) {
+        issueList (
+          owner: $owner
+          status: $status
+        ) {
+          id title status owner created effort due
+        }
+      }`;
 
     const data = await graphQLFetch(query, vars);
     if (data) {

@@ -21,7 +21,10 @@ type Issue {
 
 type Query {
   about: String!
-  issueList(status: StatusType): [Issue!]!
+  issueList(
+    owner: String
+    status: StatusType
+  ): [Issue!]!
   issue(id: Int!): Issue!
 }
 

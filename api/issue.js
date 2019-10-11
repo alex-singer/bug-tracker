@@ -32,9 +32,10 @@ async function add(_, { issue }) {
   return savedIssue;
 }
 
-async function list(_, {status}) {
+async function list(_, {owner, status}) {
   const db = getDb();
   const filter = {};
+  if (owner) filter.owner = owner;
   if (status) filter.status = status;
   const issues = await db.collection('issues').find(filter).toArray();
   return issues;
