@@ -32,11 +32,17 @@ async function add(_, { issue }) {
   return savedIssue;
 }
 
-async function list(_, {owner, status}) {
+async function list(_, {owner, status, effortMin, effortMax}) {
   const db = getDb();
   const filter = {};
+
   if (owner) filter.owner = owner;
   if (status) filter.status = status;
+  if (effortMin !== undefined || effortMax !== undefined) {
+    filter.effort = {};
+    if (effortMin !== undefined) filter.effort.$gte = effortMin;
+    if (effortMax !== undefined) filter.effort.$lte = effortMax;
+  }
   const issues = await db.collection('issues').find(filter).toArray();
   return issues;
 }

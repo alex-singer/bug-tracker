@@ -24,6 +24,8 @@ type Query {
   issueList(
     owner: String
     status: StatusType
+    effortMin: Int
+    effortMax: Int
   ): [Issue!]!
   issue(id: Int!): Issue!
 }

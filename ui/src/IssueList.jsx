@@ -50,14 +50,23 @@ export default class IssueList extends React.Component {
     if (params.get('status')) vars.status = params.get('status');
     if (params.get('owner')) vars.owner = params.get('owner');
 
+    const effortMin = parseInt(params.get('effortMin'), 10);
+    if (!Number.isNaN(effortMin)) vars.effortMin = effortMin;
+    const effortMax = parseInt(params.get('effortMax'), 10);
+    if (!Number.isNaN(effortMax)) vars.effortMax = effortMax;
+
     const query = `
       query issueList(
         $owner: String
         $status: StatusType
+        $effortMin: Int
+        $effortMax: Int
       ) {
         issueList (
           owner: $owner
           status: $status
+          effortMin: $effortMin
+          effortMax: $effortMax
         ) {
           id title status owner created effort due
         }
